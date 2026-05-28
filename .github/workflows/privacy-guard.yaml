@@ -1,0 +1,42 @@
+name: AI Privacy Guardrail
+
+on:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  scan-and-evaluate:
+    runs-on: ubuntu-latest
+    
+    # Required permissions to post comments on PRs
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install semgrep
+          pip install -r requirements.txt
+
+      - name: Run Semgrep Static Analysis
+        # Run Semgrep with standard secret/PII rules. We use '|| true' so the pipeline doesn't crash here; we let the AI decide to crash it later.
+        run: |
+          semgrep scan --config="p/secrets" --json -o semgrep-results.json || true
+          
+      - name: Run AI Privacy Assessment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: python main.py
