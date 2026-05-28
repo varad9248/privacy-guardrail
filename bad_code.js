@@ -8,5 +8,6 @@ function authenticateUser(req, res) {
 
     console.log("Authenticating user: " + userEmail + " with AWS Key: " + AWS_ACCESS_KEY_ID);
     
+    
     db.verify(userEmail);
 }
