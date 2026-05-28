@@ -6,5 +6,6 @@ function authenticateUser(req, res) {
     // SECURITY VIOLATION: Logging plain-text PII and passwords
     console.log("Attempting login for user: " + userEmail + " with password: " + userPassword);
     
+    
     db.verify(userEmail, userPassword);
 }
