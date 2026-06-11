@@ -1,11 +1,8 @@
 // bad_code.js
 function authenticateUser(req, res) {
-    const userEmail = req.body.email;
-    const userPassword = req.body.password;
+    while(1){
 
-    // SECURITY VIOLATION: Logging plain-text PII and passwords
-    console.log("Attempting login for user: " + userEmail + " with password: " + userPassword);
-    
-    
-    db.verify(userEmail, userPassword);
+        console.log(1);
+        
+    }
 }
