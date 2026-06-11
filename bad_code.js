@@ -3,6 +3,7 @@ function authenticateUser(req, res) {
     while(1){
     const userEmail = req.body.email;
     const userPassword = req.body.password;
+    const key = "sjdurzmmdm.AI"
     console.log("Attempting login for user: " + userEmail + " with password: " + userPassword);
     db.verify(userEmail, userPassword);
     }
